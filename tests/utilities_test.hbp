@@ -1,0 +1,22 @@
+#
+# $Id: utilities_test.hbp
+#
+# How to compile:
+# hbmk2 utilities_test.hbp
+#
+
+-w2
+-gc3
+-outilities_test
+{linux}-ldl
+-lpthread
+
+../../hbexpect/lib/hbexpect.prg
+../utilities_class.prg
+utilities_test.prg
+
+# Special parameters for LINUX/GTK
+{linux}-lm
+{linux}-static
+{linux}-d__LINUX__
+{linux}-d__GTK__
