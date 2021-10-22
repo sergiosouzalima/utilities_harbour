@@ -43,8 +43,7 @@ FUNCTION Main()
 					describe "and string has no separators: oUtilities:isValidDate( '31011980' )"
 						context "isValidDate()" expect(oUtilities:isValidDate('31011980')) TO_BE_FALSY
 						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
-				enddescribe
-
+					enddescribe
 				enddescribe
 
 				describe "When valid parameter"
