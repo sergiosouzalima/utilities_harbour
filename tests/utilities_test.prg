@@ -32,32 +32,32 @@ FUNCTION Main()
 
 			describe "oUtilities:isValidDate( xDate )"
 				describe "When invalid parameter"
-					describe "and no parameters given: oUtilities:isValidDate()"
-						oUtilities:isValidDate()
+					describe "and no parameters given"
+						context "isValidDate()" expect(oUtilities:isValidDate()) TO_BE_FALSY
 						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
 					enddescribe
-					describe "and string given is invalid date: oUtilities:isValidDate( '32011980' )"
-						oUtilities:isValidDate( '32011980'  )
+					describe "and string given is invalid date"
+						context "isValidDate()" expect(oUtilities:isValidDate('32011980')) TO_BE_FALSY
 						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
 					enddescribe
-					describe "and string and no separators given: oUtilities:isValidDate( '31011980' )"
-						oUtilities:isValidDate( '31011980'  )
-					context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
+					describe "and string has no separators: oUtilities:isValidDate( '31011980' )"
+						context "isValidDate()" expect(oUtilities:isValidDate('31011980')) TO_BE_FALSY
+						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
 				enddescribe
 
 				enddescribe
 
 				describe "When valid parameter"
-					describe "and date given: oUtilities:isValidDate( date() )"
-						oUtilities:isValidDate( date() )
+					describe "and current date given"
+						context "isValidDate()" expect(oUtilities:isValidDate( date() )) TO_BE_TRUTHY
 						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
 					enddescribe
-					describe "and string given: oUtilities:isValidDate( '31/01/1980' )"
-						oUtilities:isValidDate( '31/01/1980'  )
+					describe "and string is '31/01/1980'"
+						context "isValidDate()" expect(oUtilities:isValidDate( '31/01/1980' )) TO_BE_TRUTHY
 						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
 					enddescribe
-					describe "and string given: oUtilities:isValidDate( '31-01-1980' )"
-						oUtilities:isValidDate( '31-01-1980'  )
+					describe "and string is '31-01-1980'"
+						context "isValidDate()" expect(oUtilities:isValidDate( '31-01-1980' )) TO_BE_TRUTHY
 						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
 					enddescribe
 				enddescribe

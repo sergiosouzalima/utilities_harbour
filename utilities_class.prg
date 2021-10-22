@@ -17,7 +17,7 @@ CREATE CLASS Utilities
     EXPORTED:
         METHOD  New() CONSTRUCTOR
         METHOD  Destroy()
-        METHOD  isValidDate(cDate)
+        METHOD  isValidDate(cDate, cDateFormat)
         METHOD  Valid( lValid ) SETGET
 
     ERROR HANDLER OnError( xParam )
@@ -34,15 +34,16 @@ METHOD Valid( lValid ) CLASS Utilities
     ::lValid := lValid IF hb_isLogical(lValid)
 RETURN ::lValid
 
-METHOD isValidDate(xDate) CLASS Utilities
+METHOD isValidDate(xDate, cDateFormat) CLASS Utilities
+    LOCAL cDtFrmt := hb_defaultValue(cDateFormat, 'DD/MM/YYYY')
     TRY
         ::Valid := .F.
         BREAK IF (::Valid := (ValType(xDate) == "D"))
-        BREAK IF Empty(hb_CtoD(xDate, 'DD/MM/YYYY'))
+        BREAK IF Empty(hb_CtoD(xDate, cDtFrmt))
         ::Valid := .T.
     CATCH
     ENDTRY
-RETURN NIL
+RETURN ::Valid
 
 METHOD ONERROR( xParam ) CLASS Utilities
     LOCAL cCol := __GetMessage(), xResult
