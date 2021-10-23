@@ -79,7 +79,9 @@ RETURN NIL
 
 FUNCTION GetGUID_test(oUtilities) FROM CONTEXT
 	LOCAL cGUID := ""
-	describe "oUtilities:GetGUID() --> cGUID in the format 00000000-0000-0000-0000-000000000000"
+	describe "oUtilities:GetGUID() --> cGUID"
+		describe "cGUID hexa randomic value in the format 00000000-0000-0000-0000-000000000000"
+		enddescribe
 		describe "When getting GUID"
 			context "GUID value" expect( cGUID := oUtilities:GetGUID() ) NOT_TO_BE_NIL
 			context "GUID length" expect( Len(cGUID) ) TO_BE(36)
