@@ -18,6 +18,7 @@ CREATE CLASS Utilities
         METHOD  New() CONSTRUCTOR
         METHOD  Destroy()
         METHOD  isValidDate(cDate, cDateFormat)
+        METHOD  GetGUID(cParamGUID)
         METHOD  Valid( lValid ) SETGET
 
     ERROR HANDLER OnError( xParam )
@@ -44,6 +45,20 @@ METHOD isValidDate(xDate, cDateFormat) CLASS Utilities
     CATCH
     ENDTRY
 RETURN ::Valid
+
+METHOD GetGUID(cParamGUID) CLASS Utilities
+  LOCAL cGUID := hb_defaultValue(cParamGUID, "")
+  LOCAL lSetFormat := Len(cGUID) == 32
+  IF lSetFormat
+    cGUID := Stuff( cGUID, 09, 00, "-")
+    cGUID := Stuff( cGUID, 14, 01, "-4")
+    cGUID := Stuff( cGUID, 19, 01, "-A")
+    cGUID := Stuff( cGUID, 24, 00, "-")
+    RETURN cGUID
+  ENDIF
+RETURN ::GetGUID( cGUID + hb_StrToHex(hb_RandStr(02)) )
+
+
 
 METHOD ONERROR( xParam ) CLASS Utilities
     LOCAL cCol := __GetMessage(), xResult

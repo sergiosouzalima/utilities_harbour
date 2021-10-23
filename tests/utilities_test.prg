@@ -26,41 +26,14 @@ FUNCTION Main()
 
 			describe "When instantiate"
 				describe "Utilities():New() --> oUtilities"
-					context "and new method" expect(oUtilities) TO_BE_CLASS_NAME("Utilities")
+					context "and oUtilities object" expect(oUtilities) TO_BE_CLASS_NAME("Utilities")
+					context "and oUtilities object" expect(oUtilities) NOT_TO_BE_NIL
 				enddescribe
 			enddescribe
 
-			describe "oUtilities:isValidDate( xDate )"
-				describe "When invalid parameter"
-					describe "and no parameters given"
-						context "isValidDate()" expect(oUtilities:isValidDate()) TO_BE_FALSY
-						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
-					enddescribe
-					describe "and string given is invalid date"
-						context "isValidDate()" expect(oUtilities:isValidDate('32011980')) TO_BE_FALSY
-						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
-					enddescribe
-					describe "and string has no separators: oUtilities:isValidDate( '31011980' )"
-						context "isValidDate()" expect(oUtilities:isValidDate('31011980')) TO_BE_FALSY
-						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
-					enddescribe
-				enddescribe
+			isValidate_test(oUtilities) WITH CONTEXT
 
-				describe "When valid parameter"
-					describe "and current date given"
-						context "isValidDate()" expect(oUtilities:isValidDate( date() )) TO_BE_TRUTHY
-						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
-					enddescribe
-					describe "and string is '31/01/1980'"
-						context "isValidDate()" expect(oUtilities:isValidDate( '31/01/1980' )) TO_BE_TRUTHY
-						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
-					enddescribe
-					describe "and string is '31-01-1980'"
-						context "isValidDate()" expect(oUtilities:isValidDate( '31-01-1980' )) TO_BE_TRUTHY
-						context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
-					enddescribe
-				enddescribe
-			enddescribe
+			GetGUID_test(oUtilities) WITH CONTEXT
 
 			oUtilities := oUtilities:Destroy()
 
@@ -68,4 +41,50 @@ FUNCTION Main()
 
 	endhbexpect
 
+RETURN NIL
+
+FUNCTION isValidate_test(oUtilities) FROM CONTEXT
+	describe "oUtilities:isValidDate( xDate ) --> true/false"
+		describe "When invalid parameter"
+			describe "and no parameters given"
+				context "isValidDate()" expect(oUtilities:isValidDate()) TO_BE_FALSY
+				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
+			enddescribe
+			describe "and string given is invalid date"
+				context "isValidDate()" expect(oUtilities:isValidDate('32011980')) TO_BE_FALSY
+				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
+			enddescribe
+			describe "and string has no separators: oUtilities:isValidDate( '31011980' )"
+				context "isValidDate()" expect(oUtilities:isValidDate('31011980')) TO_BE_FALSY
+				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
+			enddescribe
+		enddescribe
+
+		describe "When valid parameter"
+			describe "and current date given"
+				context "isValidDate()" expect(oUtilities:isValidDate( date() )) TO_BE_TRUTHY
+				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
+			enddescribe
+			describe "and string is '31/01/1980'"
+				context "isValidDate()" expect(oUtilities:isValidDate( '31/01/1980' )) TO_BE_TRUTHY
+				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
+			enddescribe
+			describe "and string is '31-01-1980'"
+				context "isValidDate()" expect(oUtilities:isValidDate( '31-01-1980' )) TO_BE_TRUTHY
+				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
+			enddescribe
+		enddescribe
+	enddescribe
+RETURN NIL
+
+FUNCTION GetGUID_test(oUtilities) FROM CONTEXT
+	LOCAL cGUID := ""
+	describe "oUtilities:GetGUID() --> cGUID in the format 00000000-0000-0000-0000-000000000000"
+		describe "When getting GUID"
+			context "GUID value" expect( cGUID := oUtilities:GetGUID() ) NOT_TO_BE_NIL
+			context "GUID length" expect( Len(cGUID) ) TO_BE(36)
+			context "GUID version-4, 15th position of the string" expect(substr(cGUID,15,1)) TO_BE("4")
+			context "GUID variant 'DCE 1.1, ISO/IEC 11578:1996' 20th position of the string" expect(substr(cGUID,20,1)) TO_BE("A")
+		enddescribe
+	enddescribe
 RETURN NIL
