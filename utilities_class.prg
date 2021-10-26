@@ -19,7 +19,7 @@ CREATE CLASS Utilities
         METHOD  Destroy()
         METHOD  isValidDate(cDate, cDateFormat)
         METHOD  GetGUID(cParamGUID)
-        METHOD  Valid( lValid ) SETGET
+        METHOD  GetTimeStamp()
 
     ERROR HANDLER OnError( xParam )
 ENDCLASS
@@ -31,22 +31,21 @@ METHOD Destroy() CLASS Utilities
     Self := NIL
 RETURN Self
 
-METHOD Valid( lValid ) CLASS Utilities
-    ::lValid := lValid IF hb_isLogical(lValid)
-RETURN ::lValid
-
 METHOD isValidDate(xDate, cDateFormat) CLASS Utilities
-    LOCAL cDtFrmt := hb_defaultValue(cDateFormat, 'DD/MM/YYYY')
+    LOCAL lOk := .F., cDtFrmt := hb_defaultValue(cDateFormat, 'DD/MM/YYYY')
     TRY
-        ::Valid := .F.
-        BREAK IF (::Valid := (ValType(xDate) == "D"))
+        BREAK IF (lOk := (ValType(xDate) == "D"))
         BREAK IF Empty(hb_CtoD(xDate, cDtFrmt))
-        ::Valid := .T.
+        lOk := .T.
     CATCH
     ENDTRY
-RETURN ::Valid
+RETURN lOk
 
 METHOD GetGUID(cParamGUID) CLASS Utilities
+/*
+    UUID version: version-4
+    UUID variant: DCE 1.1, ISO/IEC 11578:1996
+*/
   LOCAL cGUID := hb_defaultValue(cParamGUID, "")
   LOCAL lSetFormat := Len(cGUID) == 32
   IF lSetFormat
@@ -58,7 +57,12 @@ METHOD GetGUID(cParamGUID) CLASS Utilities
   ENDIF
 RETURN ::GetGUID( cGUID + hb_StrToHex(hb_RandStr(02)) )
 
-
+METHOD GetTimeStamp() CLASS Utilities
+/*
+    Returns a string value as a time stamp.
+    Examples: 2021-10-25 19:54:03.023, 2021-10-25 19:54:04.051
+*/
+RETURN hb_TsTOStr( Hb_DateTime() )
 
 METHOD ONERROR( xParam ) CLASS Utilities
     LOCAL cCol := __GetMessage(), xResult

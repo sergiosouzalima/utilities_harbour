@@ -35,6 +35,8 @@ FUNCTION Main()
 
 			GetGUID_test(oUtilities) WITH CONTEXT
 
+			GetTimeStamp_test(oUtilities) WITH CONTEXT
+
 			oUtilities := oUtilities:Destroy()
 
 		enddescribe
@@ -48,30 +50,24 @@ FUNCTION isValidate_test(oUtilities) FROM CONTEXT
 		describe "When invalid parameter"
 			describe "and no parameters given"
 				context "isValidDate()" expect(oUtilities:isValidDate()) TO_BE_FALSY
-				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
 			enddescribe
 			describe "and string given is invalid date"
 				context "isValidDate()" expect(oUtilities:isValidDate('32011980')) TO_BE_FALSY
-				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
 			enddescribe
 			describe "and string has no separators: oUtilities:isValidDate( '31011980' )"
 				context "isValidDate()" expect(oUtilities:isValidDate('31011980')) TO_BE_FALSY
-				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_FALSY
 			enddescribe
 		enddescribe
 
 		describe "When valid parameter"
 			describe "and current date given"
 				context "isValidDate()" expect(oUtilities:isValidDate( date() )) TO_BE_TRUTHY
-				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
 			enddescribe
 			describe "and string is '31/01/1980'"
 				context "isValidDate()" expect(oUtilities:isValidDate( '31/01/1980' )) TO_BE_TRUTHY
-				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
 			enddescribe
 			describe "and string is '31-01-1980'"
 				context "isValidDate()" expect(oUtilities:isValidDate( '31-01-1980' )) TO_BE_TRUTHY
-				context "oUtilities:Valid" expect(oUtilities:Valid) TO_BE_TRUTHY
 			enddescribe
 		enddescribe
 	enddescribe
@@ -87,6 +83,18 @@ FUNCTION GetGUID_test(oUtilities) FROM CONTEXT
 			context "GUID length" expect( Len(cGUID) ) TO_BE(36)
 			context "GUID version-4, 15th position of the string" expect(substr(cGUID,15,1)) TO_BE("4")
 			context "GUID variant 'DCE 1.1, ISO/IEC 11578:1996' 20th position of the string" expect(substr(cGUID,20,1)) TO_BE("A")
+		enddescribe
+	enddescribe
+RETURN NIL
+
+FUNCTION GetTimeStamp_test(oUtilities) FROM CONTEXT
+	LOCAL cTimeStamp := ""
+	describe "oUtilities:GetTimeStamp() --> cTimeStamp"
+		describe "Example 2021-10-25 19:54:03.023 (Date Hour.Miliseconds)"
+		enddescribe
+		describe "When getting GetTimeStamp()"
+			context "cTimeStamp value" expect( cTimeStamp := oUtilities:GetTimeStamp() ) NOT_TO_BE_NIL
+			context "cTimeStamp length" expect( Len(cTimeStamp) ) TO_BE(23)
 		enddescribe
 	enddescribe
 RETURN NIL
