@@ -12,8 +12,6 @@
 
 
 CREATE CLASS Utilities
-    DATA lValid                     AS LOGICAL  INIT .F.
-
     EXPORTED:
         METHOD  New() CONSTRUCTOR
         METHOD  Destroy()
