@@ -26,8 +26,11 @@ FUNCTION Main()
 
 			describe "When instantiate"
 				describe "Utilities():New() --> oUtilities"
-					context "and oUtilities object" expect(oUtilities) TO_BE_CLASS_NAME("Utilities")
-					context "and oUtilities object" expect(oUtilities) NOT_TO_BE_NIL
+					describe "oUtilities"
+						context "Class Name" expect(oUtilities) TO_BE_CLASS_NAME("Utilities")
+						context "result" expect(oUtilities) NOT_TO_BE_NIL
+						context "type" expect(oUtilities) TO_BE_OBJECT_TYPE
+					enddescribe
 				enddescribe
 			enddescribe
 
@@ -61,7 +64,7 @@ FUNCTION isValidate_test(oUtilities) FROM CONTEXT
 
 		describe "When valid parameter"
 			describe "and current date given"
-				context "isValidDate()" expect(oUtilities:isValidDate( date() )) TO_BE_TRUTHY
+				context "isValidDate( date() )" expect(oUtilities:isValidDate( date() )) TO_BE_TRUTHY
 			enddescribe
 			describe "and string is '31/01/1980'"
 				context "isValidDate()" expect(oUtilities:isValidDate( '31/01/1980' )) TO_BE_TRUTHY
@@ -76,7 +79,7 @@ RETURN NIL
 FUNCTION GetGUID_test(oUtilities) FROM CONTEXT
 	LOCAL cGUID := ""
 	describe "oUtilities:GetGUID() --> cGUID"
-		describe "cGUID hexa randomic value in the format 00000000-0000-0000-0000-000000000000"
+		describe "cGUID returns an hexa randomic value in the format 00000000-0000-0000-0000-000000000000"
 		enddescribe
 		describe "When getting GUID"
 			context "GUID value" expect( cGUID := oUtilities:GetGUID() ) NOT_TO_BE_NIL
