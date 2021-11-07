@@ -40,6 +40,8 @@ FUNCTION Main()
 
 			GetTimeStamp_test(oUtilities) WITH CONTEXT
 
+			GetValueFromHash_test(oUtilities) WITH CONTEXT
+
 			oUtilities := oUtilities:Destroy()
 
 		enddescribe
@@ -100,4 +102,44 @@ FUNCTION GetTimeStamp_test(oUtilities) FROM CONTEXT
 			context "cTimeStamp length" expect( Len(cTimeStamp) ) TO_BE(23)
 		enddescribe
 	enddescribe
+RETURN NIL
+
+FUNCTION GetValueFromHash_test(oUtilities) FROM CONTEXT
+	LOCAL hHash := { "SALARY" => 9000, "NAME" => "JACK" }, xKey := "SALARY"
+	describe "oUtilities:getNumericValueFromHash(hHash, xKey) --> nValue"
+		describe "Example oUtilities:getNumericValueFromHash(hHash, xKey) --> 20000"
+		enddescribe
+		describe "When getting getNumericValueFromHash(hHash, xKey)"
+			describe "and xKey doesn't exist"
+				context "nValue" expect(oUtilities:getNumericValueFromHash(hHash, "MY_SALARY") ) TO_BE_ZERO
+			enddescribe
+			describe "and Value is String (not number)"
+				context "nValue" expect(oUtilities:getNumericValueFromHash(hHash, "NAME") ) TO_BE_ZERO
+			enddescribe
+		enddescribe
+		describe "When getting getNumericValueFromHash(hHash, xKey)"
+			describe "and xKey exists"
+				context "nValue" expect(oUtilities:getNumericValueFromHash(hHash, xKey) ) TO_BE(9000)
+			enddescribe
+		enddescribe
+	enddescribe
+
+	describe "oUtilities:getStringValueFromHash(hHash, xKey) --> cValue"
+		describe "Example oUtilities:getStringValueFromHash(hHash, xKey) --> JACK"
+		enddescribe
+		describe "When getting getStringValueFromHash(hHash, xKey)"
+			describe "and xKey doesn't exist"
+				context "cValue" expect(oUtilities:getStringValueFromHash(hHash, "MY_NAME") ) TO_BE("")
+			enddescribe
+			describe "and Value is Numeric number)"
+				context "cValue" expect(oUtilities:getStringValueFromHash(hHash, "SALARY") ) TO_BE("")
+			enddescribe
+		enddescribe
+		describe "When getting getStringValueFromHash(hHash, xKey)"
+			describe "and xKey exists"
+				context "cValue" expect(oUtilities:getStringValueFromHash(hHash, "NAME") ) TO_BE("JACK")
+			enddescribe
+		enddescribe
+	enddescribe
+
 RETURN NIL

@@ -18,6 +18,8 @@ CREATE CLASS Utilities
         METHOD  isValidDate(cDate, cDateFormat)
         METHOD  GetGUID(cParamGUID)
         METHOD  GetTimeStamp()
+        METHOD  getNumericValueFromHash( hHash, xKey )
+        METHOD  getStringValueFromHash( hHash, xKey )
 
     ERROR HANDLER OnError( xParam )
 ENDCLASS
@@ -57,10 +59,20 @@ RETURN ::GetGUID( cGUID + hb_StrToHex(hb_RandStr(02)) )
 
 METHOD GetTimeStamp() CLASS Utilities
 /*
-    Returns a string value as a time stamp.
+    Returns current datetime as a timestamp string.
     Examples: 2021-10-25 19:54:03.023, 2021-10-25 19:54:04.051
 */
 RETURN hb_TsTOStr( Hb_DateTime() )
+
+METHOD getNumericValueFromHash( hHash, xKey )
+    LOCAL nValue := 0, lHasKey := hb_hHasKey( hHash, xKey )
+    nValue := hHash[xKey] IF lHasKey .AND. hb_IsNumeric(hHash[xKey])
+RETURN nValue
+
+METHOD getStringValueFromHash( hHash, xKey )
+    LOCAL cValue := "", lHasKey := hb_hHasKey( hHash, xKey )
+    cValue := hHash[xKey] IF lHasKey .AND. hb_IsString(hHash[xKey])
+RETURN cValue
 
 METHOD ONERROR( xParam ) CLASS Utilities
     LOCAL cCol := __GetMessage(), xResult
