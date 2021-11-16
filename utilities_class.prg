@@ -8,10 +8,11 @@
 
 
 #include "hbclass.ch"
-#include "custom_commands_v1.0.0.ch"
+#include "custom_commands_v1.1.0.ch"
 
 
 CREATE CLASS Utilities
+
     EXPORTED:
         METHOD  New() CONSTRUCTOR
         METHOD  Destroy()
@@ -20,8 +21,6 @@ CREATE CLASS Utilities
         METHOD  GetTimeStamp()
         METHOD  getNumericValueFromHash( hHash, xKey )
         METHOD  getStringValueFromHash( hHash, xKey )
-
-    ERROR HANDLER OnError( xParam )
 ENDCLASS
 
 METHOD New() CLASS Utilities
@@ -45,6 +44,9 @@ METHOD GetGUID(cParamGUID) CLASS Utilities
 /*
     UUID version: version-4
     UUID variant: DCE 1.1, ISO/IEC 11578:1996
+    Examples:   18475806-4d57-40d0-b5ab-b59c9b6df4c9
+                2f8128b8-031c-413c-b046-a5a03aaa22ea
+                816b80c0-184d-4c1e-917f-bd2c928a74a7
 */
   LOCAL cGUID := hb_defaultValue(cParamGUID, "")
   LOCAL lSetFormat := Len(cGUID) == 32
@@ -83,21 +85,15 @@ METHOD getStringValueFromHash( hHash, xKey )
     cValue := hHash[xKey] IF lHasKey .AND. hb_IsString(hHash[xKey])
 RETURN cValue
 
-METHOD ONERROR( xParam ) CLASS Utilities
-    LOCAL cCol := __GetMessage(), xResult
+/*METHOD getErrorDescription( cParamSql, nParamSqlErrorCode )
+    LOCAL cErrorDescription := "", i := 0
+    LOCAL cSql := hb_defaultValue(cParamSql, "")
+    LOCAL cSqlErrorCode := lTrim(hb_ValToStr(hb_defaultValue(nParamSqlErrorCode, 0)))
 
-    IF Left( cCol, 1 ) == "_" // underscore means it's a variable
-       cCol = Right( cCol, Len( cCol ) - 1 )
-       IF ! __objHasData( Self, cCol )
-          __objAddData( Self, cCol )
-       ENDIF
-       IF xParam == NIL
-          xResult = __ObjSendMsg( Self, cCol )
-       ELSE
-          xResult = __ObjSendMsg( Self, "_" + cCol, xParam )
-       ENDIF
-    ELSE
-       xResult := "Method not created " + cCol
-    ENDIF
-    ? "*** Error => ", xResult
-RETURN xResult
+    cErrorDescription :=  "SqlErrorCode:" + cSqlErrorCode + "; Sql:" + cSql
+    while ( !Empty(ProcName(++i)) )
+        cErrorDescription += "; Called from: " + Trim(ProcName(i)) + "(" + ;
+            ALLTRIM(STR(ProcLine(i))) + ") - "+ ;
+            SubStr(ProcFile(i),RAT("/",ProcFile(i))+1)
+    end
+RETURN cErrorDescription*/
